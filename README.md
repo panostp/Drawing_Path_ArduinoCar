@@ -5,7 +5,7 @@ A mobile app made with Flutter, allows the user to draw/create a path for the Ca
 
 After that, the user chooses a precision for the orders that will be sent to the Arduino via Bluetooth.
 
-The precision <b>determines</b> the sample rate, thus making a high precision setting more time-consuming and vise versa for a low precision setting.
+The precision <b>determines</b> the sample rate, thus making a high precision setting more time-consuming (computation and execution) and vise versa for a low precision setting.
 
 The app converts the samples to orders, that <b>must</b> be transmitted to the Arduino with accuracy so no packet is lost and all packets are ordered properly to avoid confusion.
 
