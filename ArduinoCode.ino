@@ -1,5 +1,5 @@
 #include <AFMotor.h>
-
+//Katikatikati THIS LINE WAS CHANGED!!!
 //initial motors pin
 AF_DCMotor motor1(1, MOTOR12_1KHZ); 
 AF_DCMotor motor2(2, MOTOR12_1KHZ); 
