@@ -4,19 +4,24 @@ np.random.seed(420)
 
 XPoints = [0]
 YPoints = [0]
+
 NormArray = []
+AngleArray = []
+
+#Random points, perlin noise would more realistic but I 'm focusing on the algorithm that finds the angles.
 for i in range(10):
     XPoints.append(np.random.randint(0, 19))
     YPoints.append(np.random.randint(0, 19))
-    Norm = np.round(np.sqrt(np.power(XPoints[i] - XPoints[i - 1], 2) + np.power(YPoints[i] - YPoints[i - 1], 2)), 2)
-    NormArray.append(Norm)
 print(XPoints)
 print(YPoints)
 
-AngleArray = []
+for i in range(1, 10):
+    Norm = np.round(np.sqrt(np.power(XPoints[i] - XPoints[i - 1], 2) + np.power(YPoints[i] - YPoints[i - 1], 2)), 2)
+    NormArray.append(Norm)
+
 for i in range(1, 9):
 
-    #Xreiazetai 3 normes kai paei kapws etsi: OAB -> ABC -> BCD -> CDE -> ...
+    #Needs 3 norms to form a triangle: OAB -> ABC -> BCD -> CDE -> ...
     if NormArray[i] == 0:
         Angle = 0
     else:
