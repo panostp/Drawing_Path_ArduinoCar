@@ -20,7 +20,7 @@ B.append(A[0])
 D.append(C[0])
 
 for i in range(1, A.__len__()-1):
-    if (NormArray[i] <= 1) | (A[i] == A[i-1] & C[i] == C[i-1]):     # Isn't 100% true, angles have to be taken into consideration. Not so difficult..
+    if (NormArray[i] <= 0.5) | (A[i] == A[i-1] & C[i] == C[i-1]):     # Isn't 100% true, angles have to be taken into consideration. Not so difficult..
         continue                                                    # Angles matter more than Norms, here.
     # Really small angles are the ones that should be filtered out.
     # Also, Norms that are like <0.1 and have angles close to 0 should be filtered out too.
