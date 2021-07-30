@@ -75,6 +75,8 @@ for i in range(1, 19):
     Angle = Angle_V2 - Angle_V1
     if Angle < -3.14:
         Angle += 6.28
+    if Angle > 3.14:
+        Angle -= 6.28
     AngleArray.append(np.round((Angle*180)/np.pi, 2))
 
 print(NormArray)
