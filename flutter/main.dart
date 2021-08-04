@@ -315,6 +315,7 @@ class Home extends State<MainPage> {
     );
   }
 
+  //otan sundaiete se petaei sto homepage mhn sbiseis ta alla
   startChat(BuildContext context, BluetoothDevice server) {
     //Navigator.of(context).push(
     //MaterialPageRoute(
@@ -330,6 +331,7 @@ class Home extends State<MainPage> {
     //  );
   }
 
+  //bleutooth blakies
   Future<void> _startBackgroundTask(
     BuildContext context,
     BluetoothDevice server,

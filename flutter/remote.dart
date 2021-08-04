@@ -5,6 +5,7 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 import './list.dart';
 
+//deixnei tis available devices 8elei na allakso to onoma tou fille
 class SelectBondedDevicePage extends StatefulWidget {
   final bool checkAvailability;
   // final Function onPage;

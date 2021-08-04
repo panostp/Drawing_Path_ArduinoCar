@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'chatpage.dart';
 
+// to BluetoothDevice server deixnei to device name kai alla stoixia gia connection
+//opote ka8e file pou xreiazetai gia sundesh to 8elei
+//ama 8es na to deis bgale thn class controllerapp kai allakse to class ths
+// "class ControllerAppMain extends State<ControllerApp>"----->"class ControllerApp extends StatefulWidget"
+//kai meta phgaine sto main kai ekei pou exei to sfalma bgale tis metablhtes se ControllerApp()
 class ControllerApp extends StatefulWidget {
   final BluetoothDevice server;
 
@@ -93,9 +98,8 @@ class ControllerAppMain extends State<ControllerApp> {
     }
   }
 
-  //movement
+  //movement den ksero akoma ama doulebei sosta 8elei tests
   movement(var mov) {
-    //var value = _value;
     switch (mov) {
       case 1:
         () => sendMessage("F");

@@ -7,7 +7,7 @@ import 'controllerapp.dart';
 //import './connect.dart';
 
 //apps index
-//skip einai mia olohdia class me thn homepage alla den kanei tipota isos na thn bgaloume
+//skip einai mia olohdia class me thn homepage alla den kanei tipota isos na thn bgaloume thn kratao gia test
 //ostoso den mporeis na anikseis to homepage xoris sundesh bluetooth
 //ama 8es na dokimaseis bgale tis protes duo lines tou homepage kai phgaine sto main kai sbhse thn metablith server pou leei to sfalma
 //logika 8a prepei na kaneis to idio kai sto controllerapp
@@ -31,6 +31,7 @@ class Skip extends StatelessWidget {
         body: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            //8elo na ftiakso ligo to position apo ta koumpia sunolika 8a mpoun guro sta 4
             Positioned(
               top: 50,
               child: IconButton(
@@ -67,7 +68,7 @@ class Skip extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => Draw()),
                   );
                 },
-                icon: const Icon(Icons.history_edu_rounded),
+                icon: const Icon(Icons.border_color),
                 iconSize: 50,
               ),
             )

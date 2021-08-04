@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 //olo copy paste xreiazomoun methods deixnei pos doulebei h epeikhnonia ths app-arduino
+//axristo alla krata to mexri na teleiosoume to app
 class ChatPage extends StatefulWidget {
   final BluetoothDevice server;
 
