@@ -131,6 +131,8 @@ class DrawMain extends State<Draw> {
 }
 
 int forwardCounter = 0;
+int turnleft = 0;
+int turnright = 0;
 
 //drawing class
 class Painte extends CustomPainter {
@@ -206,11 +208,19 @@ class Painte extends CustomPainter {
       if (currentAngle < lastangle) {
         print("turn left!");
         forwardCounter = 0;
-        () => sendMessage("L");
+        turnleft++;
+        if (turnleft > 3) {
+          () => sendMessage("L");
+          turnleft = 0;
+        }
       } else if (currentAngle > lastangle) {
         forwardCounter = 0;
         print("turn right!");
-        () => sendMessage("R");
+        turnright++;
+        if (turnright > 3) {
+          () => sendMessage("R");
+          turnright = 0;
+        }
       }
     } else {
       forwardCounter++;
