@@ -210,7 +210,7 @@ class Painte extends CustomPainter {
         forwardCounter = 0;
         turnleft++;
         if (turnleft > 3) {
-          () => sendMessage("L");
+           sendMessage("L");
           turnleft = 0;
         }
       } else if (currentAngle > lastangle) {
@@ -218,7 +218,7 @@ class Painte extends CustomPainter {
         print("turn right!");
         turnright++;
         if (turnright > 3) {
-          () => sendMessage("R");
+           sendMessage("R");
           turnright = 0;
         }
       }
@@ -229,7 +229,7 @@ class Painte extends CustomPainter {
     lastangle = currentAngle;
     if (forwardCounter > 2) {
       //send command go forward
-      () => sendMessage("F");
+       sendMessage("F");
       forwardCounter = 0;
     }
   }
