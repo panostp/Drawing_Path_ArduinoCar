@@ -102,19 +102,19 @@ class ControllerAppMain extends State<ControllerApp> {
   movement(var mov) {
     switch (mov) {
       case 1:
-        () => sendMessage("F");
+         sendMessage("F");
         break;
       case 2:
-        () => sendMessage("B");
+         sendMessage("B");
         break;
       case 3:
-        () => sendMessage("L");
+         sendMessage("L");
         break;
       case 4:
-        () => sendMessage("R");
+         sendMessage("R");
         break;
       default:
-        () => sendMessage("Stop");
+         sendMessage("Stop");
     }
   }
 }
