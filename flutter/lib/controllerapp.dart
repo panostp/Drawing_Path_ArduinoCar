@@ -18,7 +18,69 @@ class ControllerApp extends StatefulWidget {
   ControllerAppMain createState() => new ControllerAppMain();
 }
 
+class _Message {
+  int whom;
+  String text;
+
+  _Message(this.whom, this.text);
+}
+
 class ControllerAppMain extends State<ControllerApp> {
+  //-----
+  static final clientID = 0;
+  BluetoothConnection? connection;
+  bool pressed = false;
+  List<_Message> messages = List<_Message>.empty(growable: true);
+  String _messageBuffer = '';
+
+  final TextEditingController textEditingController =
+      new TextEditingController();
+  final ScrollController listScrollController = new ScrollController();
+
+  bool isConnecting = true;
+  bool get isConnected => (connection?.isConnected ?? false);
+
+  bool isDisconnecting = false;
+  //-----
+  @override
+  void initState() {
+    super.initState();
+
+    BluetoothConnection.toAddress(widget.server.address).then((_connection) {
+      print('Connected to the device');
+      connection = _connection;
+      setState(() {
+        isConnecting = false;
+        isDisconnecting = false;
+      });
+
+      connection!.input!.listen(_onDataReceived).onDone(() {
+        if (isDisconnecting) {
+          print('Disconnecting locally!');
+        } else {
+          print('Disconnected remotely!');
+        }
+        if (this.mounted) {
+          setState(() {});
+        }
+      });
+    }).catchError((error) {
+      print('Cannot connect, exception occured');
+      print(error);
+    });
+  }
+
+  @override
+  void dispose() {
+    if (isConnected) {
+      isDisconnecting = true;
+      connection?.dispose();
+      connection = null;
+    }
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget outside = new Container(
@@ -44,30 +106,90 @@ class ControllerAppMain extends State<ControllerApp> {
           child: Stack(children: <Widget>[
         outside,
         Positioned(
-          child: IconButton(
-              onPressed: movement("1"),
-              icon: const Icon(Icons.arrow_drop_up)), //pano
+          child: GestureDetector(
+            child: Icon(Icons.arrow_drop_up),
+            onTap: () {
+              sendMessage("F");
+            },
+            onLongPressStart: (details) async {
+              pressed = true;
+              do {
+                sendMessage("F");
+                await Future.delayed(Duration(microseconds: 50));
+              } while (pressed);
+            },
+            onLongPressEnd: (details) {
+              setState(() {
+                pressed = false;
+              });
+            },
+          ), //pano
           top: 10,
           left: 80,
         ),
         Positioned(
-          child: IconButton(
-              onPressed: movement("2"),
-              icon: const Icon(Icons.arrow_drop_down)), //kato
+          child: GestureDetector(
+            child: Icon(Icons.arrow_drop_down),
+            onTap: () {
+              sendMessage("B");
+            },
+            onLongPressStart: (details) async {
+              pressed = true;
+              do {
+                sendMessage("B");
+                await Future.delayed(Duration(microseconds: 50));
+              } while (pressed);
+            },
+            onLongPressEnd: (details) {
+              setState(() {
+                pressed = false;
+              });
+            },
+          ), //kato
           bottom: 10,
           left: 80,
         ),
         Positioned(
-          child: IconButton(
-              onPressed: movement("3"),
-              icon: const Icon(Icons.arrow_left_sharp)), //aristera
+          child: GestureDetector(
+            child: Icon(Icons.arrow_left_sharp),
+            onTap: () {
+              sendMessage("L");
+            },
+            onLongPressStart: (details) async {
+              pressed = true;
+              do {
+                sendMessage("L");
+                await Future.delayed(Duration(microseconds: 50));
+              } while (pressed);
+            },
+            onLongPressEnd: (details) {
+              setState(() {
+                pressed = false;
+              });
+            },
+          ), //aristera
           top: 80,
           left: 10,
         ),
         Positioned(
-          child: IconButton(
-              onPressed: movement("4"),
-              icon: const Icon(Icons.arrow_right)), //deksia
+          child: GestureDetector(
+            child: Icon(Icons.arrow_right_sharp),
+            onTap: () {
+              sendMessage("R");
+            },
+            onLongPressStart: (details) async {
+              pressed = true;
+              do {
+                sendMessage("R");
+                await Future.delayed(Duration(microseconds: 50));
+              } while (pressed);
+            },
+            onLongPressEnd: (details) {
+              setState(() {
+                pressed = false;
+              });
+            },
+          ), //deksia
           top: 80,
           right: 10,
         ),
@@ -80,7 +202,56 @@ class ControllerAppMain extends State<ControllerApp> {
     );
   }
 
+  void _onDataReceived(Uint8List data) {
+    int backspacesCounter = 0;
+    data.forEach((byte) {
+      if (byte == 8 || byte == 127) {
+        backspacesCounter++;
+      }
+    });
+    Uint8List buffer = Uint8List(data.length - backspacesCounter);
+    int bufferIndex = buffer.length;
+
+    // Apply backspace control character
+    backspacesCounter = 0;
+    for (int i = data.length - 1; i >= 0; i--) {
+      if (data[i] == 8 || data[i] == 127) {
+        backspacesCounter++;
+      } else {
+        if (backspacesCounter > 0) {
+          backspacesCounter--;
+        } else {
+          buffer[--bufferIndex] = data[i];
+        }
+      }
+    }
+
+    // Create message if there is new line character
+    String dataString = String.fromCharCodes(buffer);
+    int index = buffer.indexOf(13);
+    if (~index != 0) {
+      setState(() {
+        messages.add(
+          _Message(
+            1,
+            backspacesCounter > 0
+                ? _messageBuffer.substring(
+                    0, _messageBuffer.length - backspacesCounter)
+                : _messageBuffer + dataString.substring(0, index),
+          ),
+        );
+        _messageBuffer = dataString.substring(index);
+      });
+    } else {
+      _messageBuffer = (backspacesCounter > 0
+          ? _messageBuffer.substring(
+              0, _messageBuffer.length - backspacesCounter)
+          : _messageBuffer + dataString);
+    }
+  }
+
   //sends
+  //put it in the class to set state
   void sendMessage(String movement) async {
     BluetoothConnection? connection;
     final TextEditingController textEditingController =
@@ -98,25 +269,22 @@ class ControllerAppMain extends State<ControllerApp> {
     }
   }
 
-  //movement den ksero akoma ama doulebei sosta 8elei tests
-  movement(var mov) {
+  /*movement(var mov) {
     switch (mov) {
       case 1:
-         sendMessage("F");
+        sendMessage("F");
         break;
       case 2:
-         sendMessage("B");
+        sendMessage("B");
         break;
       case 3:
-         sendMessage("L");
+        sendMessage("L");
         break;
       case 4:
-         sendMessage("R");
+        sendMessage("R");
         break;
-      default:
-         sendMessage("Stop");
     }
-  }
+  }*/
 }
 
 class cirlce extends StatelessWidget {

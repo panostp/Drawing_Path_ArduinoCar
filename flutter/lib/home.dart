@@ -2,15 +2,25 @@ import 'package:firstapp/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'controllerapp.dart';
-//import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-//import './connect.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 //apps index
 //skip einai mia olohdia class me thn homepage alla den kanei tipota isos na thn bgaloume thn kratao gia test
 //ostoso den mporeis na anikseis to homepage xoris sundesh bluetooth
 //ama 8es na dokimaseis bgale tis protes duo lines tou homepage kai phgaine sto main kai sbhse thn metablith server pou leei to sfalma
 //logika 8a prepei na kaneis to idio kai sto controllerapp
-class Skip extends StatelessWidget {
+//happy stuff
+int penguin = 0;
+double penguinVis = 0.0;
+
+class Skip extends StatefulWidget {
+  @override
+  Skipmain createState() => new Skipmain();
+}
+
+class Skipmain extends State<Skip> {
+  bool pressed = false;
+
   @override
   Widget build(BuildContext context) {
     final ButtonStyle style = ElevatedButton.styleFrom(
@@ -22,7 +32,26 @@ class Skip extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text('KGL APP',
+          actions: [
+            Opacity(
+                opacity: penguinVis,
+                child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        if (penguin == 4) {
+                          penguinVis = 1.0;
+                          AudioPlayer audioPlayer = AudioPlayer();
+                          playLocal() async {
+                            int kali = await audioPlayer.play("assets/kali.mp3",
+                                isLocal: true);
+                          }
+                        }
+                      });
+                      penguin++;
+                    },
+                    icon: Image.asset("assets/happy.png")))
+          ],
+          title: Text('Home',
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.green)),
         ),
@@ -56,6 +85,29 @@ class Skip extends StatelessWidget {
                       },
                     );
                   }),
+            ),
+            Positioned(
+              //TODO:implement on controllerapp for smooth contolls + ad on tap
+              child: GestureDetector(
+                child: Icon(Icons.skip_previous_rounded),
+                onTap: () {
+                  print("tap");
+                },
+                onLongPressStart: (details) async {
+                  pressed = true;
+                  do {
+                    print('F');
+                    await Future.delayed(Duration(microseconds: 50));
+                  } while (pressed);
+                },
+                onLongPressEnd: (details) {
+                  setState(() {
+                    pressed = false;
+                  });
+                },
+              ), //pano
+              top: 10,
+              left: 80,
             ),
             // Spacer(),
             Positioned(

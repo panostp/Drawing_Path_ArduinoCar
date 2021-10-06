@@ -23,7 +23,10 @@ BluetoothDevice? device = null;
 class FirstApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: MainPage(), theme: ThemeData.dark());
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: MainPage(),
+        theme: ThemeData.dark());
   }
 }
 
@@ -107,6 +110,20 @@ class Home extends State<MainPage> {
           "First connect with the car",
           style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
         ),
+        actions: [
+          Opacity(
+              opacity: penguinVis,
+              child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      if (penguin == 4) {
+                        penguinVis = 1.0;
+                      }
+                    });
+                    penguin++;
+                  },
+                  icon: Image.asset("assets/happy.png")))
+        ],
       ),
       body: Container(
         child: ListView(
@@ -276,7 +293,7 @@ class Home extends State<MainPage> {
             ),
             ListTile(
               title: ElevatedButton(
-                child: const Text("Connect to paired device to chat"),
+                child: const Text("Connect to paired device"),
                 onPressed: () async {
                   final BluetoothDevice? selectedDevice =
                       await Navigator.of(context).push(
